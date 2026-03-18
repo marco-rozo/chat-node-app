@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { SocketEvent } from "./enums/socket-event.enum";
+import { SocketEvent } from "./enums/socketEventEnum";
 
 export class ChatSocket {
     private io: Server;

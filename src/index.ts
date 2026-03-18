@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
-import { setupSocket } from './socket';
+import { setupSocket } from './core/external/websocket/socket';
 import routes from './core/config/routes';
 
 const app: Application = express();
