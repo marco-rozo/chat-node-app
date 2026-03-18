@@ -19,7 +19,8 @@ export class AuthUserUsecase {
     password,
   }: IAuthRequest): Promise<IAuthResponse> {
 
-    const existUser: IUser | Failure = await this.findUserByEmailUsecase.execute(email);
+    const showPassword = true;
+    const existUser: IUser | Failure = await this.findUserByEmailUsecase.execute(email, showPassword);
 
     if (existUser instanceof Failure) {
       throw new UserAuthNotFoundFailure();
@@ -31,7 +32,7 @@ export class AuthUserUsecase {
       throw new UserAuthInvalidPasswordFailure();
     }
 
-    const token = jwt.sign({ id: existUser._id }, TokenJwtConfig.SECRET, {
+    const token = jwt.sign({ id: existUser.id }, TokenJwtConfig.SECRET, {
       expiresIn: TokenJwtConfig.EXPIRES_IN,
     });
 

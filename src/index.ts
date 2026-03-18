@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import { setupSocket } from './core/external/websocket/socket';
 import routes from './core/config/routes';
+import { DatabaseConnection } from './core/external/database/databaseConnection';
 
 const app: Application = express();
 const PORT: number = 8000;
@@ -27,7 +28,22 @@ const io = new Server(server, {
 // Chamar a função de configuração dos sockets
 setupSocket(io);
 
-// Iniciar o servidor com server.listen em vez de app.listen
-server.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
+async function startServer() {
+    try {
+        const db = DatabaseConnection.getInstance();
+
+        console.log("Conectando ao banco de dados");
+        await db.connect();
+
+        server.listen(PORT, () => {
+            console.log(`DB conectado com sucesso!`);
+            console.log(`Servidor rodando em http://localhost:${PORT}`);
+        });
+
+    } catch (error) {
+        console.error("Erro ao iniciar o servidor:", error);
+        process.exit(1);
+    }
+}
+
+startServer();

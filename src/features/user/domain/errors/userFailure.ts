@@ -6,9 +6,9 @@ export class UserRegisterFailure extends Failure {
     }
 }
 
-export class UserAlreadyExistsFailure extends Failure {
-    constructor(message: string = 'Usuário já cadastrado') {
-        super('USER_ALREADY_EXISTS_ERROR', message);
+export class UserEmailAlreadyExistsFailure extends Failure {
+    constructor(message: string = 'Email já cadastrado') {
+        super('USER_EMAIL_ALREADY_EXISTS_ERROR', message);
     }
 }
 

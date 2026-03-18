@@ -1,4 +1,4 @@
-import { fromUserResponse, IUser, IUserResponse } from "../../../user/domain/entities/user";
+import { fromUserResponse, IUser } from "../../../user/domain/entities/user";
 
 export interface IAuthRequest {
   email: string;
@@ -6,7 +6,7 @@ export interface IAuthRequest {
 }
 
 export interface IAuthResponse {
-  user: IUserResponse;
+  user: IUser;
   token: string;
 }
 

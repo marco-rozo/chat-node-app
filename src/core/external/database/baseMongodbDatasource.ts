@@ -1,26 +1,18 @@
-import { Collection, Db, ObjectId, Document, Filter, UpdateFilter } from 'mongodb';
+import { Model, UpdateQuery } from 'mongoose';
 
-export abstract class BaseMongoDbDatasource<T extends Document = Document> {
-    protected collection: Collection<T>;
-    protected db: Db;
-
-    constructor(db: Db, collectionName: string) {
-        this.db = db;
-        this.collection = this.db.collection<T>(collectionName);
-    }
+export abstract class BaseMongoDbDatasource<T> {
+    constructor(protected readonly model: Model<T>) { }
 
     async get(id: string): Promise<T | null> {
-        return (await this.collection.findOne({ _id: new ObjectId(id) } as Filter<T>)) as T | null;
+        // O Mongoose converte a string ID automaticamente
+        return await this.model.findById(id).exec();
     }
 
     async getAll(): Promise<T[]> {
-        return (await this.collection.find().toArray()) as unknown as T[];
+        return await this.model.find().exec();
     }
 
     async update(id: string, data: Partial<T>): Promise<void> {
-        await this.collection.updateOne(
-            { _id: new ObjectId(id) } as Filter<T>,
-            { $set: data } as UpdateFilter<T>
-        );
+        await this.model.findByIdAndUpdate(id, { $set: data } as UpdateQuery<T>).exec();
     }
 }

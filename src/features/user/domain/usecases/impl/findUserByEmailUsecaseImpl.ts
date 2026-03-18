@@ -11,8 +11,8 @@ export class FindUserByEmailUsecaseImpl implements FindUserByEmailUsecase {
         this.findUserByEmailDatasource = findUserByEmailDatasource;
     }
 
-    async execute(email: string): Promise<Failure | IUser> {
-        const result = await this.findUserByEmailDatasource.execute(email);
+    async execute(email: string, showPassword: boolean = false): Promise<Failure | IUser> {
+        const result = await this.findUserByEmailDatasource.execute(email, showPassword);
 
         if (result instanceof Failure) {
             return result;

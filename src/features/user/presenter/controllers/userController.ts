@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { UserAuthFailure } from "../../../auth/domain/errors/userAuthFailure";
 import { RegisterUserUsecase } from "../../domain/usecases/registerUserUsecase";
-import { UserAlreadyExistsFailure } from "../../domain/errors/userFailure";
-import { formatErrorResponse } from "../../../../core/utils/formatResponse";
+import { UserEmailAlreadyExistsFailure } from "../../domain/errors/userFailure";
+import { formatErrorResponse, formatSuccessResponse } from "../../../../core/utils/formatResponse";
 
 export class UserController {
     private registerUserUsecase: RegisterUserUsecase;
@@ -12,10 +11,10 @@ export class UserController {
 
     async register(req: Request, res: Response) {
         try {
-            const response: any = await this.registerUserUsecase.execute(req.body);
-            return res.status(200).json(response);
+            const response = await this.registerUserUsecase.execute(req.body);
+            return res.status(200).json(formatSuccessResponse(response));
         } catch (error: any) {
-            if (error instanceof UserAlreadyExistsFailure) {
+            if (error instanceof UserEmailAlreadyExistsFailure) {
                 return res.status(400).json(formatErrorResponse(error));
             }
             console.error(error);

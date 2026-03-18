@@ -1,10 +1,9 @@
-import { DefaultResponse } from "../../../../../core/entities/defaultResponse";
 import { Failure } from "../../../../../core/errors/failure";
 import { RegisterUserDatasource } from "../../../data/datasources/registerUserDatasource";
 import { IUser } from "../../entities/user";
 import { RegisterUserUsecase } from "../registerUserUsecase";
 import { FindUserByEmailUsecase } from "../findUserByEmailUsecase";
-import { UserAlreadyExistsFailure } from "../../errors/userFailure";
+import { UserEmailAlreadyExistsFailure } from "../../errors/userFailure";
 import bcrypt from "bcryptjs";
 
 export class RegisterUserUsecaseImpl implements RegisterUserUsecase {
@@ -16,7 +15,7 @@ export class RegisterUserUsecaseImpl implements RegisterUserUsecase {
         this.findUserByEmailUsecase = findUserByEmailUsecase;
     }
 
-    async execute(user: IUser): Promise<Failure | DefaultResponse> {
+    async execute(user: IUser): Promise<Failure | IUser> {
         const userExists = await this.findUserByEmailUsecase.execute(user.email);
 
         if (userExists instanceof Failure) {
@@ -24,10 +23,10 @@ export class RegisterUserUsecaseImpl implements RegisterUserUsecase {
         }
 
         if (userExists) {
-            return new UserAlreadyExistsFailure();
+            throw new UserEmailAlreadyExistsFailure();
         }
 
-        const hashPassword = await bcrypt.hash(user.password, 10);
+        const hashPassword: string = await bcrypt.hash(user.password!, 10);
 
         const userRegister: IUser = {
             ...user,
@@ -40,11 +39,7 @@ export class RegisterUserUsecaseImpl implements RegisterUserUsecase {
             return result;
         }
 
-        const response: DefaultResponse = {
-            data: 'Usuário cadastrado com sucesso!'
-        }
-
-        return response;
+        return result;
 
     }
 } 
