@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export class DatabaseConnection {
     private static instance: DatabaseConnection;
-    private static uri: string = process.env.MONGO_URI || "mongodb://localhost:27017";
+    private static uri: string = process.env.MONGO_URI || "mongodb://localhost:27017/ixc_chat";
 
     private constructor() {
     }

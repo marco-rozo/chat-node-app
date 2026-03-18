@@ -1,5 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { SocketEvent } from "./enums/socketEventEnum";
+import { ChatController } from "../../../features/chat/presenter/controllers/chatController";
+import { chatController } from "../../../features/chat";
 
 export class ChatSocket {
     private io: Server;
@@ -40,6 +42,8 @@ export class ChatSocket {
 
     public handleSendMessage(data: any) {
         console.log('Mensagem recebida:', data);
+        const controller = chatController;
+        controller.receiveNewMessage(data);
         // Envia para todos na sala, incluindo quem enviou
         this.io.to(data.room).emit(SocketEvent.RECEIVE_MESSAGE, data);
     }
@@ -52,6 +56,12 @@ export class ChatSocket {
 
     public handleDisconnect(socket: Socket) {
         console.log("Usuário desconectado", socket.id);
+    }
+
+    public handleSendPrivateMessage(data: any) {
+        console.log('Mensagem privada recebida:', data);
+        // Envia para todos na sala, incluindo quem enviou
+        this.io.to(data.room).emit(SocketEvent.RECEIVE_MESSAGE, data);
     }
 }
 

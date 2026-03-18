@@ -9,6 +9,6 @@ const findUserByEmailDatasource = new FindUserByEmailDatasourceImpl();
 const findUserByEmailUsecase = new FindUserByEmailUsecaseImpl(findUserByEmailDatasource);
 const registerUserUsecase = new RegisterUserUsecaseImpl(registerUserDatasource, findUserByEmailUsecase);
 
-const userController = new UserController(registerUserUsecase);
+const userController = new UserController(registerUserUsecase, findUserByEmailUsecase);
 
 export { userController, findUserByEmailUsecase };

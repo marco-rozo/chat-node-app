@@ -4,7 +4,6 @@ export abstract class BaseMongoDbDatasource<T> {
     constructor(protected readonly model: Model<T>) { }
 
     async get(id: string): Promise<T | null> {
-        // O Mongoose converte a string ID automaticamente
         return await this.model.findById(id).exec();
     }
 

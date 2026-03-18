@@ -22,7 +22,7 @@ export class AuthUserUsecase {
     const showPassword = true;
     const existUser: IUser | Failure = await this.findUserByEmailUsecase.execute(email, showPassword);
 
-    if (existUser instanceof Failure) {
+    if (existUser instanceof Failure || existUser === null) {
       throw new UserAuthNotFoundFailure();
     }
 

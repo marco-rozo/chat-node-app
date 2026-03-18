@@ -1,6 +1,6 @@
 import { Failure } from "../../../../../core/errors/failure";
 import { RegisterUserDatasource } from "../../../data/datasources/registerUserDatasource";
-import { IUser } from "../../entities/user";
+import { fromUserResponse, IUser } from "../../entities/user";
 import { RegisterUserUsecase } from "../registerUserUsecase";
 import { FindUserByEmailUsecase } from "../findUserByEmailUsecase";
 import { UserEmailAlreadyExistsFailure } from "../../errors/userFailure";
@@ -39,7 +39,6 @@ export class RegisterUserUsecaseImpl implements RegisterUserUsecase {
             return result;
         }
 
-        return result;
-
+        return fromUserResponse(userRegister);
     }
 } 
