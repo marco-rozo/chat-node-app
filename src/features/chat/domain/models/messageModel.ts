@@ -6,6 +6,7 @@ import { IMessage } from '../entities/message';
 const messageSchema = new Schema<IMessage>({
     chat: { type: String, ref: CollectionsNames.CHATS, required: true },
     sender: { type: String, ref: CollectionsNames.USERS, required: true },
+    senderName: { type: String, required: true },
     content: { type: String, required: true }
 }, {
     timestamps: true,

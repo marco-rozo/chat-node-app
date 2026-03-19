@@ -44,38 +44,40 @@ export class CreateChatUsecaseImpl implements CreateChatUsecase {
 
         const result = await this.createChatDatasource.execute(chatData);
 
-        if (!(result instanceof Failure)) {
-            const participantsWithDetails = await Promise.all(
-                participants.map(async (participantId) => {
-                    const userResult = await this.findUserByIdDatasource.execute(participantId);
-                    if (userResult instanceof Failure) {
-                        return { id: participantId, name: 'Unknown', email: '' };
-                    }
-                    return userResult;
-                })
+        if (result instanceof Failure) {
+            return result;
+        }
+
+        const participantsWithDetails = await Promise.all(
+            participants.map(async (participantId) => {
+                const userResult = await this.findUserByIdDatasource.execute(participantId);
+                if (userResult instanceof Failure) {
+                    return { id: participantId, name: 'Unknown', email: '' };
+                }
+                return userResult;
+            })
+        );
+
+        const chatWithParticipants: IChatWithParticipants = {
+            _id: result._id,
+            participants: participantsWithDetails,
+            lastMessage: result.lastMessage,
+            createdAt: result.createdAt,
+            updatedAt: result.updatedAt
+        };
+
+        const notification: INewChatNotification = {
+            chat: chatWithParticipants,
+            createdBy: creatorId
+        };
+
+        const otherParticipantId = participants.find(p => p !== creatorId);
+        if (otherParticipantId) {
+            this.socketEmitter.emitToRoom(
+                otherParticipantId,
+                SocketEventEnum.CHAT_CREATED,
+                notification
             );
-
-            const chatWithParticipants: IChatWithParticipants = {
-                _id: result._id,
-                participants: participantsWithDetails,
-                lastMessage: result.lastMessage,
-                createdAt: result.createdAt,
-                updatedAt: result.updatedAt
-            };
-
-            const notification: INewChatNotification = {
-                chat: chatWithParticipants,
-                createdBy: creatorId
-            };
-
-            const otherParticipantId = participants.find(p => p !== creatorId);
-            if (otherParticipantId) {
-                this.socketEmitter.emitToRoom(
-                    otherParticipantId,
-                    SocketEventEnum.CHAT_CREATED,
-                    notification
-                );
-            }
         }
 
         return result;
