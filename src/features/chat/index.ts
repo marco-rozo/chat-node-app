@@ -31,7 +31,7 @@ const sendMessageUsecase = new SendMessageUsecaseImpl(
     findChatByRoomUsecase
 );
 
-const createChatUsecase = new CreateChatUsecaseImpl(createChatDatasource, findChatByRoomDatasource);
+const createChatUsecase = new CreateChatUsecaseImpl(createChatDatasource, findChatByRoomDatasource, findUserByIdDatasource, socketEmitter);
 
 const getUserChatsUsecase = new GetUserChatsUsecaseImpl(
     findChatsByUserDatasource,

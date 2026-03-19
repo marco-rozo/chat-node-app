@@ -184,6 +184,7 @@ src/
 | `send_message` | Usuário envia uma mensagem |
 | `receive_message` | Mensagem recebida por outros usuários |
 | `new_message_notification` | Notificação de nova mensagem |
+| `chat_created` | Novo chat foi criado |
 | `user_status_changed` | Status online/offline do usuário mudou |
 
 ---

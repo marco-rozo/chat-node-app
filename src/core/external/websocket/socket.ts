@@ -27,6 +27,7 @@ class ChatSocket {
 
         if (userId) {
             this.handleUserOnline(userId, socket.id);
+            socket.join(userId);
         }
 
         socket.on(SocketEventEnum.JOIN_ROOM, (data) => this.handlers.handleJoinRoom(socket, data));

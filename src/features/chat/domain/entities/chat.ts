@@ -16,3 +16,8 @@ export interface IChatWithParticipants {
     createdAt?: Date;
     updatedAt?: Date;
 }
+
+export interface CreateChatUsecaseInput {
+    participants: string[];
+    creatorId: string;
+}

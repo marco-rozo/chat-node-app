@@ -1,6 +1,6 @@
 import { Failure } from '../../../../core/errors/failure';
-import { IChat } from '../entities/chat';
+import { CreateChatUsecaseInput, IChat } from '../entities/chat';
 
 export interface CreateChatUsecase {
-    execute(participants: string[]): Promise<IChat | Failure>;
+    execute(input: CreateChatUsecaseInput): Promise<IChat | Failure>;
 }

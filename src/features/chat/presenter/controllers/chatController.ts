@@ -23,7 +23,12 @@ export class ChatController {
     public async createChat(request: Request, response: Response) {
         try {
             const { participants } = request.body;
-            const result = await this.createChatUsecase.execute(participants);
+            const creatorId = request.userId;
+
+            const result = await this.createChatUsecase.execute({
+                participants,
+                creatorId
+            });
 
             if (result instanceof Failure) {
                 return response.status(400).json(formatErrorResponse(result));
