@@ -49,12 +49,8 @@ export class ChatSocket {
     }
 
     public handleJoinRoom(socket: Socket, data: any) {
-        const { room, user } = data;
+        const { room } = data;
         socket.join(room);
-        console.log(`User ${user} entrou na sala: ${room}`);
-
-        // Avisa aos outros da sala que esse usuário entrou
-        socket.to(room).emit(SocketEventEnum.USER_JOINED, data);
     }
 
     public async handleSendMessage(data: any) {

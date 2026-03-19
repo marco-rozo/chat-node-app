@@ -5,7 +5,6 @@ export enum SocketEventEnum {
 
   // eventos do chat
   JOIN_ROOM = "join_room",
-  USER_JOINED = "user_joined",
   SEND_MESSAGE = "send_message",
   RECEIVE_MESSAGE = "receive_message",
   NEW_MESSAGE_NOTIFICATION = "new_message_notification",

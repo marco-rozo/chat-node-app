@@ -61,7 +61,8 @@ export class SendMessageUsecaseImpl implements SendMessageUsecase {
             const notification: INewMessageNotification = {
                 chatId: data.chat,
                 content: data.content,
-                senderName: senderName
+                senderName: senderName,
+                senderId: data.sender
             };
             this.socketEmitter.emitToRoom(data.chat, SocketEventEnum.NEW_MESSAGE_NOTIFICATION, notification);
 
