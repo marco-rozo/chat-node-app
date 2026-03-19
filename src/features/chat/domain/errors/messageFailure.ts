@@ -11,3 +11,9 @@ export class SaveMessageFailure extends Failure {
         super('SAVE_MESSAGE_ERROR', message);
     }
 }
+
+export class FindMessagesFailure extends Failure {
+    constructor(message: string = 'Erro ao buscar mensagens') {
+        super('FIND_MESSAGES_ERROR', message);
+    }
+}

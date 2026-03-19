@@ -1,34 +1,51 @@
 import { Server, Socket } from "socket.io";
-import { SocketEvent } from "./enums/socketEventEnum";
-import { ChatController } from "../../../features/chat/presenter/controllers/chatController";
-import { chatController } from "../../../features/chat";
+import { SocketEventEnum as SocketEventEnum, SocketUserStatusEventEnum as SocketUserStatusEventEnum } from "./enums/socketEnum";
+import { SocketConnection } from "./socketConnection";
+import { sendMessageUsecase } from "../../../features/chat";
 
 export class ChatSocket {
     private io: Server;
+    private static usersOnline: Map<string, string> = new Map();
 
-    constructor(io: Server) {
-        this.io = io;
+    constructor() {
+        this.io = SocketConnection.getInstance().getServer();
     }
 
     public setup() {
-        this.io.on(SocketEvent.CONNECTION, (socket: Socket) => {
-            this.handleConnection(socket);
-        });
+        try {
+            this.io.on(SocketEventEnum.CONNECTION, (socket: Socket) => {
+                this.handleConnection(socket);
+            });
+            console.info(`✅ Socket conectado com sucesso!`);
+        } catch (error) {
+            console.error(`❌ Erro ao conectar o socket:`, error);
+        }
+    }
+
+    public static isUserOnline(userId: string): boolean {
+        return this.usersOnline.has(userId);
     }
 
     public handleConnection(socket: Socket) {
         console.log('Cliente conectado:', socket.id);
 
-        // Entrar em uma "sala" específica 
-        socket.on(SocketEvent.JOIN_ROOM, (data: any) => this.handleJoinRoom(socket, data));
+        const userId = socket.handshake.auth.userId || socket.handshake.query.userId;
 
-        // Enviar mensagem
-        socket.on(SocketEvent.SEND_MESSAGE, (data: any) => this.handleSendMessage(data));
+        if (userId) {
+            ChatSocket.usersOnline.set(userId, socket.id);
+            console.log(`Usuário ${userId} está online.`);
 
-        // Evento customizado de desconexão do chat
-        socket.on(SocketEvent.CHAT_DISCONNECT, (data: any) => this.handleChatDisconnect(socket, data));
+            this.io.emit(SocketEventEnum.USER_STATUS_CHANGED, { userId, status: SocketUserStatusEventEnum.ONLINE });
+        }
 
-        socket.on(SocketEvent.DISCONNECT, () => this.handleDisconnect(socket));
+        socket.on(SocketEventEnum.JOIN_ROOM, (data: any) => this.handleJoinRoom(socket, data));
+
+        socket.on(SocketEventEnum.SEND_MESSAGE, (data: any) => this.handleSendMessage(data));
+
+        socket.on(SocketEventEnum.DISCONNECT, () => {
+            console.log('Cliente desconectado:', userId);
+            return this.handleDisconnect(socket, userId);
+        });
     }
 
     public handleJoinRoom(socket: Socket, data: any) {
@@ -37,35 +54,30 @@ export class ChatSocket {
         console.log(`User ${user} entrou na sala: ${room}`);
 
         // Avisa aos outros da sala que esse usuário entrou
-        socket.to(room).emit(SocketEvent.USER_JOINED, data);
+        socket.to(room).emit(SocketEventEnum.USER_JOINED, data);
     }
 
-    public handleSendMessage(data: any) {
+    public async handleSendMessage(data: any) {
         console.log('Mensagem recebida:', data);
-        const controller = chatController;
-        controller.receiveNewMessage(data);
-        // Envia para todos na sala, incluindo quem enviou
-        this.io.to(data.room).emit(SocketEvent.RECEIVE_MESSAGE, data);
+        await sendMessageUsecase.execute(data);
     }
 
-    public handleChatDisconnect(socket: Socket, data: any) {
-        console.log(`Usuário ${data.user} desconectou da sala ${data.room}`);
-        // Avisar os outros usuários da sala que alguém saiu
-        socket.to(data.room).emit(SocketEvent.USER_LEFT, data);
-    }
+    public handleDisconnect(socket: Socket, userId?: string) {
+        if (userId) {
+            ChatSocket.usersOnline.delete(userId);
+            console.log(`Usuário ${userId} ficou offline.`);
 
-    public handleDisconnect(socket: Socket) {
-        console.log("Usuário desconectado", socket.id);
+            this.io.emit(SocketEventEnum.USER_STATUS_CHANGED, { userId, status: SocketUserStatusEventEnum.OFFLINE });
+        }
     }
 
     public handleSendPrivateMessage(data: any) {
         console.log('Mensagem privada recebida:', data);
-        // Envia para todos na sala, incluindo quem enviou
-        this.io.to(data.room).emit(SocketEvent.RECEIVE_MESSAGE, data);
+        this.io.to(data.room).emit(SocketEventEnum.RECEIVE_MESSAGE, data);
     }
 }
 
-export const setupSocket = (io: Server) => {
-    const chatSocket = new ChatSocket(io);
+export const setupSocket = () => {
+    const chatSocket = new ChatSocket();
     chatSocket.setup();
 };

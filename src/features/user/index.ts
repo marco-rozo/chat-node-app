@@ -3,12 +3,14 @@ import { RegisterUserDatasourceImpl } from "./data/datasources/impl/registerUser
 import { RegisterUserUsecaseImpl } from "./domain/usecases/impl/registerUserUsecaseImpl";
 import { FindUserByEmailDatasourceImpl } from "./data/datasources/impl/findUserByEmailDatasourceImpl";
 import { FindUserByEmailUsecaseImpl } from "./domain/usecases/impl/findUserByEmailUsecaseImpl";
+import { CheckUserOnlineUsecaseImpl } from "./domain/usecases/impl/checkUserOnlineUsecaseImpl";
 
 const registerUserDatasource = new RegisterUserDatasourceImpl();
 const findUserByEmailDatasource = new FindUserByEmailDatasourceImpl();
 const findUserByEmailUsecase = new FindUserByEmailUsecaseImpl(findUserByEmailDatasource);
 const registerUserUsecase = new RegisterUserUsecaseImpl(registerUserDatasource, findUserByEmailUsecase);
+const checkUserOnlineUsecase = new CheckUserOnlineUsecaseImpl();
 
-const userController = new UserController(registerUserUsecase, findUserByEmailUsecase);
+const userController = new UserController(registerUserUsecase, findUserByEmailUsecase, checkUserOnlineUsecase);
 
-export { userController, findUserByEmailUsecase };
+export { userController, findUserByEmailUsecase, checkUserOnlineUsecase };

@@ -1,86 +1,72 @@
 import { formatErrorResponse, formatSuccessResponse } from "../../../../core/utils/formatResponse";
-import { generateRoomId } from "../../../../core/utils/chatIdUtils";
-import { CreateChatDatasource } from "../../data/datasources/createChatDatasource";
-import { UpdateChatDatasource } from "../../data/datasources/updateChatDatasource";
-import { IChat } from "../../domain/entities/chat";
-import { IMessage } from "../../domain/entities/message";
-import { FindChatByRoomUsecase } from "../../domain/usecases/findChatByRoomUsecase";
+import { CreateChatUsecase } from "../../domain/usecases/createChatUsecase";
+import { GetUserChatsUsecase } from "../../domain/usecases/getUserChatsUsecase";
+import { GetChatMessagesUsecase } from "../../domain/usecases/getChatMessagesUsecase";
 import { Failure } from "../../../../core/errors/failure";
-import { SaveMessageDatasource } from "../../data/datasources/saveMessageDatasource";
+import { Request, Response } from "express";
 
 export class ChatController {
-    private createChatDatasource: CreateChatDatasource;
-    private updateChatDatasource: UpdateChatDatasource;
-    private saveMessageDatasource: SaveMessageDatasource;
-    private findChatByRoomUsecase: FindChatByRoomUsecase;
+    private createChatUsecase: CreateChatUsecase;
+    private getUserChatsUsecase: GetUserChatsUsecase;
+    private getChatMessagesUsecase: GetChatMessagesUsecase;
 
-    constructor(createChatUsecase: CreateChatDatasource, updateChatUsecase: UpdateChatDatasource, saveMessageUsecase: SaveMessageDatasource, findChatByRoomUsecase: FindChatByRoomUsecase) {
-        this.createChatDatasource = createChatUsecase;
-        this.updateChatDatasource = updateChatUsecase;
-        this.saveMessageDatasource = saveMessageUsecase;
-        this.findChatByRoomUsecase = findChatByRoomUsecase;
+    constructor(
+        createChatUsecase: CreateChatUsecase,
+        getUserChatsUsecase: GetUserChatsUsecase,
+        getChatMessagesUsecase: GetChatMessagesUsecase,
+    ) {
+        this.createChatUsecase = createChatUsecase;
+        this.getUserChatsUsecase = getUserChatsUsecase;
+        this.getChatMessagesUsecase = getChatMessagesUsecase;
     }
 
-    async receiveNewMessage(data: IMessage) {
+    async createChat(request: Request, response: Response) {
         try {
-            const { sender, receiver, content, chat } = data;
+            const { participants } = request.body;
+            console.log("Create chat request received:", participants);
 
-            const message: IMessage = {
-                sender: sender,
-                receiver: receiver,
-                content: content,
-                chat: chat!
-            };
+            const result = await this.createChatUsecase.execute(participants);
 
-            const newMessage = await this.saveMessageDatasource.execute(message);
-            if (newMessage instanceof Failure) {
-                return formatErrorResponse(newMessage);
-            }
-
-            let currentChat: IChat;
-            let result = await this.findChatByRoomUsecase.execute(chat!);
             if (result instanceof Failure) {
-                return formatErrorResponse(result);
-            }
-            currentChat = result;
-
-            const updateChat = await this.updateChatDatasource.execute({
-                ...currentChat,
-                lastMessage: content
-            });
-
-            if (updateChat instanceof Failure) {
-                return formatErrorResponse(updateChat);
+                return response.status(400).json(formatErrorResponse(result));
             }
 
-            return formatSuccessResponse(newMessage);
-
+            return response.status(201).json(formatSuccessResponse(result));
         } catch (error: any) {
             console.error(error);
             return formatErrorResponse(error);
         }
     }
 
-    async createChat(request: any, response: any) {
+    async getUserChats(request: Request, response: Response) {
         try {
-            const { participants } = request.body;
-            console.log("Create chat request received:", participants);
+            const { userId } = request.params;
+            console.log("Get user chats request for userId:", userId);
 
-            const roomId = generateRoomId(participants[0], participants[1]);
-
-            const chatData: IChat = {
-                _id: roomId,
-                participants: participants,
-                lastMessage: undefined
-            };
-
-            const result = await this.createChatDatasource.execute(chatData);
+            const result = await this.getUserChatsUsecase.execute(userId.toString());
 
             if (result instanceof Failure) {
                 return response.status(500).json(formatErrorResponse(result));
             }
 
-            return response.status(201).json(formatSuccessResponse(result));
+            return response.status(200).json(formatSuccessResponse(result));
+        } catch (error: any) {
+            console.error(error);
+            return formatErrorResponse(error);
+        }
+    }
+
+    async getChatMessages(request: Request, response: Response) {
+        try {
+            const chatIdParam = request.params.chatId;
+
+            const result = await this.getChatMessagesUsecase.execute(chatIdParam.toString()!);
+
+            if (result instanceof Failure) {
+                return response.status(500).json(formatErrorResponse(result));
+            }
+
+            return response.status(200).json(formatSuccessResponse(result));
         } catch (error: any) {
             console.error(error);
             return formatErrorResponse(error);

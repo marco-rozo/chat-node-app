@@ -18,3 +18,9 @@ export class ChatNotFoundFailure extends Failure {
         super('CHAT_NOT_FOUND_ERROR', message);
     }
 }
+
+export class FindChatsFailure extends Failure {
+    constructor(message: string = 'Erro ao buscar chats') {
+        super('FIND_CHATS_ERROR', message);
+    }
+}

@@ -2,10 +2,10 @@
   "name": "chat-challenge-node-app",
   "version": "1.0.0",
   "description": "Backend for Chat Challenge",
-  "main": "src/index.ts",
+  "main": "src/server.ts",
   "scripts": {
-    "start": "tsc && node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "start": "tsc && node dist/server.js",
+    "dev": "nodemon src/server.ts",
     "build": "tsc",
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint -p tsconfig.json --fix",
