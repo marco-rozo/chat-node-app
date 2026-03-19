@@ -187,3 +187,46 @@ src/
 | `user_status_changed` | Status online/offline do usuário mudou |
 
 ---
+
+## Quick Start
+
+### Pré-requisitos
+
+- Node.js (v18+)
+- Docker e Docker Compose
+
+### Passo a passo
+
+1. **Instale as dependências:**
+
+```bash
+npm install
+```
+
+2. **Inicie o container Docker com MongoDB:**
+
+```bash
+docker-compose up -d
+```
+
+Isso irá criar um container `mongodb_ixc_chat` rodando na porta `27017` com as credenciais:
+- **Username:** `root`
+- **Password:** `password`
+
+3. **Inicie o servidor:**
+
+```bash
+npm run dev
+```
+
+O servidor estará disponível em: `http://localhost:8000`
+
+### Scripts Disponíveis
+
+| Comando | Descrição |
+|---------|-----------|
+| `npm run dev` | Inicia o servidor em modo desenvolvimento (com hot-reload) |
+| `npm start` | Compila TypeScript e inicia o servidor em modo produção |
+| `npm run build` | Compila o código TypeScript para JavaScript |
+| `npm run lint` | Executa o linter |
+| `npm run lint:fix` | Executa o linter e corrige problemas automaticamente |

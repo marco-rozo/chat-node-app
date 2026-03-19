@@ -1,15 +1,15 @@
-import { IMessage } from "../../entities/message";
-import { SendMessageUsecase } from "../sendMessageUsecase";
-import { SaveMessageDatasource } from "../../../data/datasources/saveMessageDatasource";
-import { FindUserByIdDatasource } from "../../../../user/data/datasources/findUserByIdDatasource";
-import { INewMessageNotification } from "../../entities/messageNotification";
-import { UpdateChatDatasource } from "../../../data/datasources/updateChatDatasource";
-import { FindChatByRoomUsecase } from "../findChatByRoomUsecase";
-import { IChat } from "../../entities/chat";
-import { SocketEmitter } from "../../../../../core/external/websocket/socketEmitter";
-import { Failure } from "../../../../../core/errors/failure";
-import { SocketEventEnum } from "../../../../../core/external/websocket/enums/socketEnum";
-import { SendMessageFailure } from "../../errors/messageFailure";
+import { Failure } from '../../../../../core/errors/failure';
+import { SocketEventEnum } from '../../../../../core/external/websocket/enums/socketEnum';
+import { SocketEmitter } from '../../../../../core/external/websocket/socketEmitter';
+import { FindUserByIdDatasource } from '../../../../user/data/datasources/findUserByIdDatasource';
+import { SaveMessageDatasource } from '../../../data/datasources/saveMessageDatasource';
+import { UpdateChatDatasource } from '../../../data/datasources/updateChatDatasource';
+import { IChat } from '../../entities/chat';
+import { IMessage } from '../../entities/message';
+import { INewMessageNotification } from '../../entities/messageNotification';
+import { SendMessageFailure } from '../../errors/messageFailure';
+import { FindChatByRoomUsecase } from '../findChatByRoomUsecase';
+import { SendMessageUsecase } from '../sendMessageUsecase';
 
 export class SendMessageUsecaseImpl implements SendMessageUsecase {
     private saveMessageDatasource: SaveMessageDatasource;
@@ -32,7 +32,7 @@ export class SendMessageUsecaseImpl implements SendMessageUsecase {
         this.findChatByRoomUsecase = findChatByRoomUsecase;
     }
 
-    async execute(data: IMessage): Promise<IMessage | Failure> {
+    public async execute(data: IMessage): Promise<IMessage | Failure> {
         try {
             const message = await this.saveMessageDatasource.execute(data);
             if (message instanceof Failure) {
@@ -49,26 +49,26 @@ export class SendMessageUsecaseImpl implements SendMessageUsecase {
                 };
                 const updatedChat = await this.updateChatDatasource.execute(chatData);
                 if (updatedChat instanceof Failure) {
-                    console.error("Falha ao atualizar a última mensagem do chat:", updatedChat);
+                    console.error('Falha ao atualizar a última mensagem do chat:', updatedChat);
                 }
             }
 
             const senderUser = await this.findUserByIdDatasource.execute(data.sender);
-            const senderName = senderUser && 'name' in senderUser ? senderUser.name : "Unknown";
+            const senderName = senderUser && 'name' in senderUser ? senderUser.name : 'Unknown';
 
             this.socketEmitter.emitToRoom(data.chat, SocketEventEnum.RECEIVE_MESSAGE, message);
 
             const notification: INewMessageNotification = {
                 chatId: data.chat,
                 content: data.content,
-                senderName: senderName,
+                senderName,
                 senderId: data.sender
             };
             this.socketEmitter.emitToRoom(data.chat, SocketEventEnum.NEW_MESSAGE_NOTIFICATION, notification);
 
             return message;
         } catch (error: any) {
-            console.error("Erro ao processar envio de mensagem:", error);
+            console.error('Erro ao processar envio de mensagem:', error);
             return new SendMessageFailure();
         }
     }

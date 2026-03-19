@@ -1,11 +1,11 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import { fromAuthResponse, IAuthRequest, IAuthResponse } from "../entities/authUser";
-import { IUser } from "../../../user/domain/entities/user";
-import { UserAuthInvalidPasswordFailure, UserAuthNotFoundFailure } from "../errors/userAuthFailure";
-import { TokenJwtConfig } from "../../../../core/const/tokenJwtConfig";
-import { FindUserByEmailUsecase } from "../../../user/domain/usecases/findUserByEmailUsecase";
-import { Failure } from "../../../../core/errors/failure";
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { TokenJwtConfig } from '../../../../core/const/tokenJwtConfig';
+import { Failure } from '../../../../core/errors/failure';
+import { IUser } from '../../../user/domain/entities/user';
+import { FindUserByEmailUsecase } from '../../../user/domain/usecases/findUserByEmailUsecase';
+import { fromAuthResponse, IAuthRequest, IAuthResponse } from '../entities/authUser';
+import { UserAuthInvalidPasswordFailure, UserAuthNotFoundFailure } from '../errors/userAuthFailure';
 
 export class AuthUserUsecase {
   private findUserByEmailUsecase: FindUserByEmailUsecase;
@@ -14,9 +14,9 @@ export class AuthUserUsecase {
     this.findUserByEmailUsecase = findUserByEmailUsecase;
   }
 
-  async execute({
+  public async execute({
     email,
-    password,
+    password
   }: IAuthRequest): Promise<IAuthResponse> {
 
     const showPassword = true;
@@ -33,7 +33,7 @@ export class AuthUserUsecase {
     }
 
     const token = jwt.sign({ id: existUser.id }, TokenJwtConfig.SECRET, {
-      expiresIn: TokenJwtConfig.EXPIRES_IN,
+      expiresIn: TokenJwtConfig.EXPIRES_IN
     });
 
     const response: IAuthResponse = fromAuthResponse(existUser, token);

@@ -1,6 +1,6 @@
 export abstract class Failure {
-    errorCode: string;
-    message: string;
+    public errorCode: string;
+    public message: string;
 
     constructor(errorCode: string, message: string) {
         this.errorCode = errorCode;

@@ -1,5 +1,5 @@
 export class CollectionsNames {
-    static USERS = 'users';
-    static CHATS = 'chats';
-    static MESSAGES = 'messages';
+    public static USERS = 'users';
+    public static CHATS = 'chats';
+    public static MESSAGES = 'messages';
 }

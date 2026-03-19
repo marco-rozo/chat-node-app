@@ -1,4 +1,4 @@
-import { SocketUserStatusEventEnum } from "./enums/socketEnum";
+import { SocketUserStatusEventEnum } from './enums/socketEnum';
 
 export interface SocketEmitter {
     emitToRoom(room: string, event: string, data: any): void;

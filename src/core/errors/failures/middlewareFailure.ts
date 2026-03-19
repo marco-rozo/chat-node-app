@@ -1,4 +1,4 @@
-import { Failure } from "../failure"
+import { Failure } from '../failure';
 
 export class TokenNotProvidedFailure extends Failure {
     constructor(message: string = 'Token not provided') {

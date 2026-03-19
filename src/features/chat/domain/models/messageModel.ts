@@ -1,12 +1,12 @@
-import { Schema } from "mongoose";
-import { IMessage } from "../entities/message";
-import { CollectionsNames } from "../../../../core/const/collectionName";
-import { model } from "mongoose";
+import { Schema } from 'mongoose';
+import { model } from 'mongoose';
+import { CollectionsNames } from '../../../../core/const/collectionName';
+import { IMessage } from '../entities/message';
 
 const messageSchema = new Schema<IMessage>({
     chat: { type: String, ref: CollectionsNames.CHATS, required: true },
     sender: { type: String, ref: CollectionsNames.USERS, required: true },
-    content: { type: String, required: true },
+    content: { type: String, required: true }
 }, {
     timestamps: true,
     toJSON: {

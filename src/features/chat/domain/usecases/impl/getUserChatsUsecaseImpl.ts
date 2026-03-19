@@ -1,8 +1,8 @@
-import { IChat, IChatWithParticipants } from "../../entities/chat";
-import { GetUserChatsUsecase } from "../getUserChatsUsecase";
-import { Failure } from "../../../../../core/errors/failure";
-import { FindChatsByUserDatasource } from "../../../data/datasources/findChatsByUserDatasource";
-import { FindUserByIdDatasource } from "../../../../user/data/datasources/findUserByIdDatasource";
+import { Failure } from '../../../../../core/errors/failure';
+import { FindUserByIdDatasource } from '../../../../user/data/datasources/findUserByIdDatasource';
+import { FindChatsByUserDatasource } from '../../../data/datasources/findChatsByUserDatasource';
+import { IChat, IChatWithParticipants } from '../../entities/chat';
+import { GetUserChatsUsecase } from '../getUserChatsUsecase';
 
 export class GetUserChatsUsecaseImpl implements GetUserChatsUsecase {
     private findChatsByUserDatasource: FindChatsByUserDatasource;
@@ -10,13 +10,13 @@ export class GetUserChatsUsecaseImpl implements GetUserChatsUsecase {
 
     constructor(
         findChatsByUserDatasource: FindChatsByUserDatasource,
-        findUserByIdDatasource: FindUserByIdDatasource,
+        findUserByIdDatasource: FindUserByIdDatasource
     ) {
         this.findChatsByUserDatasource = findChatsByUserDatasource;
         this.findUserByIdDatasource = findUserByIdDatasource;
     }
 
-    async execute(userId: string): Promise<IChatWithParticipants[] | Failure> {
+    public async execute(userId: string): Promise<IChatWithParticipants[] | Failure> {
         const result = await this.findChatsByUserDatasource.execute(userId);
 
         if (result instanceof Failure) {
@@ -35,7 +35,7 @@ export class GetUserChatsUsecaseImpl implements GetUserChatsUsecase {
                         }
                         const userResult = await this.findUserByIdDatasource.execute(participantIdStr);
                         if (userResult instanceof Failure) {
-                            return { id: participantId, name: "Unknown", email: "" };
+                            return { id: participantId, name: 'Unknown', email: '' };
                         }
                         return userResult;
                     })

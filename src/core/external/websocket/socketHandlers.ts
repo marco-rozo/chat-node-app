@@ -1,6 +1,6 @@
-import { Socket, Server } from "socket.io";
-import { SocketEventEnum } from "./enums/socketEnum";
-import { sendMessageUsecase } from "../../../features/chat";
+import { Server, Socket } from 'socket.io';
+import { sendMessageUsecase } from '../../../features/chat';
+import { SocketEventEnum } from './enums/socketEnum';
 
 export class SocketHandlers {
     constructor(private io: Server) { }
@@ -13,7 +13,7 @@ export class SocketHandlers {
         await sendMessageUsecase.execute(data);
     }
 
-    public handlePrivateMessage(data: { room: string;[key: string]: any }) {
+    public handlePrivateMessage(data: { room: string; [key: string]: any }) {
         this.io.to(data.room).emit(SocketEventEnum.RECEIVE_MESSAGE, data);
     }
 }

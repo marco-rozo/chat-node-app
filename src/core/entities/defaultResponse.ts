@@ -1,3 +1,3 @@
 export interface DefaultResponse {
-    data: any
+    data: any;
 }

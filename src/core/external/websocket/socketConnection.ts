@@ -1,10 +1,6 @@
-import { Server } from "socket.io";
+import { Server } from 'socket.io';
 
 export class SocketConnection {
-    private static instance: SocketConnection;
-    private io: Server | null = null;
-
-    private constructor() { }
 
     public static getInstance(): SocketConnection {
         if (!SocketConnection.instance) {
@@ -12,6 +8,10 @@ export class SocketConnection {
         }
         return SocketConnection.instance;
     }
+    private static instance: SocketConnection;
+    private io: Server | null = null;
+
+    private constructor() { }
 
     public setServer(io: Server): void {
         this.io = io;
@@ -19,7 +19,7 @@ export class SocketConnection {
 
     public getServer(): Server {
         if (!this.io) {
-            throw new Error("Socket server not initialized. Call setServer() first.");
+            throw new Error('Socket server not initialized. Call setServer() first.');
         }
         return this.io;
     }

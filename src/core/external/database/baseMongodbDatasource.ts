@@ -3,15 +3,15 @@ import { Model, UpdateQuery } from 'mongoose';
 export abstract class BaseMongoDbDatasource<T> {
     constructor(protected readonly model: Model<T>) { }
 
-    async get(id: string): Promise<T | null> {
+    public async get(id: string): Promise<T | null> {
         return await this.model.findById(id).exec();
     }
 
-    async getAll(): Promise<T[]> {
+    public async getAll(): Promise<T[]> {
         return await this.model.find().exec();
     }
 
-    async update(id: string, data: Partial<T>): Promise<void> {
+    public async update(id: string, data: Partial<T>): Promise<void> {
         await this.model.findByIdAndUpdate(id, { $set: data } as UpdateQuery<T>).exec();
     }
 }

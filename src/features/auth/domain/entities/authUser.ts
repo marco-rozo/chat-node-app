@@ -1,4 +1,4 @@
-import { fromUserResponse, IUser } from "../../../user/domain/entities/user";
+import { fromUserResponse, IUser } from '../../../user/domain/entities/user';
 
 export interface IAuthRequest {
   email: string;
@@ -10,11 +10,10 @@ export interface IAuthResponse {
   token: string;
 }
 
-
 export function fromAuthResponse(user: IUser, token: string): IAuthResponse {
-  let authResponse: IAuthResponse = {
+  const authResponse: IAuthResponse = {
     user: fromUserResponse(user),
-    token: token,
+    token
   };
 
   return authResponse;

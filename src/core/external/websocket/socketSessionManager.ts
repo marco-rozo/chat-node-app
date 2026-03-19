@@ -1,5 +1,4 @@
 export class SocketSessionManager {
-    private static usersOnline: Map<string, string> = new Map();
 
     public static addSession(userId: string, socketId: string): void {
         this.usersOnline.set(userId, socketId);
@@ -16,4 +15,5 @@ export class SocketSessionManager {
     public static getSocketId(userId: string): string | undefined {
         return this.usersOnline.get(userId);
     }
+    private static usersOnline: Map<string, string> = new Map();
 }

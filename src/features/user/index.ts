@@ -1,9 +1,9 @@
-import { UserController } from "./presenter/controllers/userController";
-import { RegisterUserDatasourceImpl } from "./data/datasources/impl/registerUserDatasourceImpl";
-import { RegisterUserUsecaseImpl } from "./domain/usecases/impl/registerUserUsecaseImpl";
-import { FindUserByEmailDatasourceImpl } from "./data/datasources/impl/findUserByEmailDatasourceImpl";
-import { FindUserByEmailUsecaseImpl } from "./domain/usecases/impl/findUserByEmailUsecaseImpl";
-import { CheckUserOnlineUsecaseImpl } from "./domain/usecases/impl/checkUserOnlineUsecaseImpl";
+import { FindUserByEmailDatasourceImpl } from './data/datasources/impl/findUserByEmailDatasourceImpl';
+import { RegisterUserDatasourceImpl } from './data/datasources/impl/registerUserDatasourceImpl';
+import { CheckUserOnlineUsecaseImpl } from './domain/usecases/impl/checkUserOnlineUsecaseImpl';
+import { FindUserByEmailUsecaseImpl } from './domain/usecases/impl/findUserByEmailUsecaseImpl';
+import { RegisterUserUsecaseImpl } from './domain/usecases/impl/registerUserUsecaseImpl';
+import { UserController } from './presenter/controllers/userController';
 
 const registerUserDatasource = new RegisterUserDatasourceImpl();
 const findUserByEmailDatasource = new FindUserByEmailDatasourceImpl();

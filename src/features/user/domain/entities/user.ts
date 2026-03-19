@@ -13,10 +13,10 @@ export interface IUserResponse {
 }
 
 export function fromUserResponse(user: IUser): IUserResponse {
-    let userResponse: IUserResponse = {
+    const userResponse: IUserResponse = {
         id: user.id!,
         email: user.email,
-        name: user.name,
+        name: user.name
     };
 
     return userResponse;

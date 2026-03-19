@@ -1,10 +1,10 @@
-import { Failure } from "../../../../../core/errors/failure";
-import { RegisterUserDatasource } from "../../../data/datasources/registerUserDatasource";
-import { fromUserResponse, IUser } from "../../entities/user";
-import { RegisterUserUsecase } from "../registerUserUsecase";
-import { FindUserByEmailUsecase } from "../findUserByEmailUsecase";
-import { UserEmailAlreadyExistsFailure } from "../../errors/userFailure";
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
+import { Failure } from '../../../../../core/errors/failure';
+import { RegisterUserDatasource } from '../../../data/datasources/registerUserDatasource';
+import { fromUserResponse, IUser } from '../../entities/user';
+import { UserEmailAlreadyExistsFailure } from '../../errors/userFailure';
+import { FindUserByEmailUsecase } from '../findUserByEmailUsecase';
+import { RegisterUserUsecase } from '../registerUserUsecase';
 
 export class RegisterUserUsecaseImpl implements RegisterUserUsecase {
     private registerUserDatasource: RegisterUserDatasource;
@@ -15,7 +15,7 @@ export class RegisterUserUsecaseImpl implements RegisterUserUsecase {
         this.findUserByEmailUsecase = findUserByEmailUsecase;
     }
 
-    async execute(user: IUser): Promise<Failure | IUser> {
+    public async execute(user: IUser): Promise<Failure | IUser> {
         const userExists = await this.findUserByEmailUsecase.execute(user.email);
 
         if (userExists instanceof Failure) {
@@ -41,4 +41,4 @@ export class RegisterUserUsecaseImpl implements RegisterUserUsecase {
 
         return fromUserResponse(userRegister);
     }
-} 
+}

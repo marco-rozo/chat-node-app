@@ -1,9 +1,9 @@
-import { IChat } from "../../entities/chat";
-import { CreateChatUsecase } from "../createChatUsecase";
-import { Failure } from "../../../../../core/errors/failure";
-import { CreateChatDatasource } from "../../../data/datasources/createChatDatasource";
-import { generateRoomId } from "../../../../../core/utils/chatIdUtils";
-import { FindChatByRoomDatasource } from "../../../data/datasources/findChatByRoomDatasource";
+import { Failure } from '../../../../../core/errors/failure';
+import { generateRoomId } from '../../../../../core/utils/chatIdUtils';
+import { CreateChatDatasource } from '../../../data/datasources/createChatDatasource';
+import { FindChatByRoomDatasource } from '../../../data/datasources/findChatByRoomDatasource';
+import { IChat } from '../../entities/chat';
+import { CreateChatUsecase } from '../createChatUsecase';
 
 export class CreateChatUsecaseImpl implements CreateChatUsecase {
     private createChatDatasource: CreateChatDatasource;
@@ -14,7 +14,7 @@ export class CreateChatUsecaseImpl implements CreateChatUsecase {
         this.findChatByRoomIdDatasource = findChatByRoomIdDatasource;
     }
 
-    async execute(participants: string[]): Promise<IChat | Failure> {
+    public async execute(participants: string[]): Promise<IChat | Failure> {
         const roomId = generateRoomId(participants[0], participants[1]);
 
         const existingChat = await this.findChatByRoomIdDatasource.execute(roomId);
@@ -24,7 +24,7 @@ export class CreateChatUsecaseImpl implements CreateChatUsecase {
 
         const chatData: IChat = {
             _id: roomId,
-            participants: participants,
+            participants,
             lastMessage: undefined
         };
 

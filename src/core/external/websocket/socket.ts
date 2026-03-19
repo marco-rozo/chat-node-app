@@ -1,8 +1,8 @@
-import { Server, Socket } from "socket.io";
-import { SocketEventEnum as SocketEventEnum, SocketUserStatusEventEnum as SocketUserStatusEventEnum } from "./enums/socketEnum";
-import { SocketConnection } from "./socketConnection";
-import { SocketSessionManager } from "./socketSessionManager";
-import { SocketHandlers } from "./socketHandlers";
+import { Server, Socket } from 'socket.io';
+import { SocketEventEnum as SocketEventEnum, SocketUserStatusEventEnum as SocketUserStatusEventEnum } from './enums/socketEnum';
+import { SocketConnection } from './socketConnection';
+import { SocketHandlers } from './socketHandlers';
+import { SocketSessionManager } from './socketSessionManager';
 
 class ChatSocket {
     private io: Server;

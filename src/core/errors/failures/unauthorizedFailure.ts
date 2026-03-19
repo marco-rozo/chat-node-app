@@ -1,4 +1,4 @@
-import { Failure } from "../failure";
+import { Failure } from '../failure';
 
 export class UnauthorizedFailure extends Failure {
     constructor(message: string = 'Unauthorized') {

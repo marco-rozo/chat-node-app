@@ -1,4 +1,4 @@
-import { Failure } from "../../../../core/errors/failure";
+import { Failure } from '../../../../core/errors/failure';
 
 export class UserRegisterFailure extends Failure {
     constructor(message: string = 'Erro ao cadastrar usuário') {

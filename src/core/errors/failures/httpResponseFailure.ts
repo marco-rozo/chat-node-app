@@ -1,8 +1,8 @@
-import { Failure } from "../failure";
+import { Failure } from '../failure';
 
 export class HttpResponseFailure extends Failure {
-    statusCode: number;
-    data: any;
+    public statusCode: number;
+    public data: any;
 
     constructor(
         message: string = 'Http response error',

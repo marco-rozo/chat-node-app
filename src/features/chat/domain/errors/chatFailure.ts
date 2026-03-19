@@ -1,4 +1,4 @@
-import { Failure } from "../../../../core/errors/failure";
+import { Failure } from '../../../../core/errors/failure';
 
 export class CreateChatFailure extends Failure {
     constructor(message: string = 'Erro ao criar chat') {
@@ -11,7 +11,6 @@ export class UpdateChatFailure extends Failure {
         super('UPDATE_CHAT_ERROR', message);
     }
 }
-
 
 export class ChatNotFoundFailure extends Failure {
     constructor(message: string = 'Chat não encontrado') {

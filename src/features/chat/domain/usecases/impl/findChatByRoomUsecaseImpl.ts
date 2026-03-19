@@ -1,7 +1,7 @@
-import { IChat } from "../../entities/chat";
-import { FindChatByRoomUsecase } from "../findChatByRoomUsecase";
-import { Failure } from "../../../../../core/errors/failure";
-import { FindChatByRoomDatasource } from "../../../data/datasources/findChatByRoomDatasource";
+import { Failure } from '../../../../../core/errors/failure';
+import { FindChatByRoomDatasource } from '../../../data/datasources/findChatByRoomDatasource';
+import { IChat } from '../../entities/chat';
+import { FindChatByRoomUsecase } from '../findChatByRoomUsecase';
 
 export class FindChatByRoomUsecaseImpl implements FindChatByRoomUsecase {
     private findChatByRoomDatasource: FindChatByRoomDatasource;
@@ -10,7 +10,7 @@ export class FindChatByRoomUsecaseImpl implements FindChatByRoomUsecase {
         this.findChatByRoomDatasource = findChatByRoomDatasource;
     }
 
-    async execute(room: string): Promise<IChat | Failure> {
+    public async execute(room: string): Promise<IChat | Failure> {
         const result = await this.findChatByRoomDatasource.execute(room);
         return result;
     }

@@ -1,6 +1,6 @@
-import { AuthController } from "./presenter/controllers/authController";
-import { AuthUserUsecase } from "./domain/usecases/authUserUsecase";
-import { findUserByEmailUsecase } from "../user";
+import { findUserByEmailUsecase } from '../user';
+import { AuthUserUsecase } from './domain/usecases/authUserUsecase';
+import { AuthController } from './presenter/controllers/authController';
 
 const authUserUsecase = new AuthUserUsecase(findUserByEmailUsecase);
 

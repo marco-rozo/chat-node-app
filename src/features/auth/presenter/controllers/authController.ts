@@ -1,14 +1,14 @@
-import { Request, Response } from "express";
-import { AuthUserUsecase } from "../../domain/usecases/authUserUsecase";
-import { UserAuthFailure } from "../../domain/errors/userAuthFailure";
-import { IAuthResponse } from "../../domain/entities/authUser";
-import { formatErrorResponse, formatSuccessResponse } from "../../../../core/utils/formatResponse";
-import { Failure } from "../../../../core/errors/failure";
+import { Request, Response } from 'express';
+import { Failure } from '../../../../core/errors/failure';
+import { formatErrorResponse, formatSuccessResponse } from '../../../../core/utils/formatResponse';
+import { IAuthResponse } from '../../domain/entities/authUser';
+import { UserAuthFailure } from '../../domain/errors/userAuthFailure';
+import { AuthUserUsecase } from '../../domain/usecases/authUserUsecase';
 
 export class AuthController {
     constructor(private authUserUsecase: AuthUserUsecase) { }
 
-    async login(req: Request, res: Response) {
+    public async login(req: Request, res: Response) {
         try {
             const response: IAuthResponse = await this.authUserUsecase.execute(req.body);
 

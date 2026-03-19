@@ -1,19 +1,19 @@
-import { DefaultResponse } from "../entities/defaultResponse";
-import { Failure } from "../errors/failure";
+import { DefaultResponse } from '../entities/defaultResponse';
+import { Failure } from '../errors/failure';
 
 export function formatErrorResponse(failure?: Failure): DefaultResponse {
     if (failure) {
         return {
-            data: failure,
+            data: failure
         };
     }
     return {
-        data: 'Internal server error',
+        data: 'Internal server error'
     };
 }
 
 export function formatSuccessResponse(data: any = undefined): DefaultResponse {
     return {
-        data: data,
+        data
     };
 }

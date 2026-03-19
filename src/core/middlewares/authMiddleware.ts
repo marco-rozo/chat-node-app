@@ -1,7 +1,7 @@
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { NextFunction, Request, Response } from "express";
-import { TokenPayload } from '../entities/tokenPayload';
 import { TokenJwtConfig } from '../const/tokenJwtConfig';
+import { TokenPayload } from '../entities/tokenPayload';
 import { InvalidTokenFailure, TokenNotProvidedFailure } from '../errors/failures/middlewareFailure';
 import { formatErrorResponse } from '../utils/formatResponse';
 

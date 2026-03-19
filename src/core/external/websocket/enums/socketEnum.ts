@@ -1,18 +1,18 @@
 export enum SocketEventEnum {
   // nomes reservados
-  DISCONNECT = "disconnect",
-  CONNECTION = "connection",
+  DISCONNECT = 'disconnect',
+  CONNECTION = 'connection',
 
   // eventos do chat
-  JOIN_ROOM = "join_room",
-  SEND_MESSAGE = "send_message",
-  RECEIVE_MESSAGE = "receive_message",
-  NEW_MESSAGE_NOTIFICATION = "new_message_notification",
-  USER_STATUS_CHANGED = "user_status_changed"
+  JOIN_ROOM = 'join_room',
+  SEND_MESSAGE = 'send_message',
+  RECEIVE_MESSAGE = 'receive_message',
+  NEW_MESSAGE_NOTIFICATION = 'new_message_notification',
+  USER_STATUS_CHANGED = 'user_status_changed'
 
 }
 
 export enum SocketUserStatusEventEnum {
-  ONLINE = "online",
-  OFFLINE = "offline",
+  ONLINE = 'online',
+  OFFLINE = 'offline'
 }

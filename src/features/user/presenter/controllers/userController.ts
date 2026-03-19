@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
-import { RegisterUserUsecase } from "../../domain/usecases/registerUserUsecase";
-import { UserEmailAlreadyExistsFailure, UserNotFoundFailure } from "../../domain/errors/userFailure";
-import { formatErrorResponse, formatSuccessResponse } from "../../../../core/utils/formatResponse";
-import { FindUserByEmailUsecase } from "../../domain/usecases/findUserByEmailUsecase";
-import { CheckUserOnlineUsecase } from "../../domain/usecases/checkUserOnlineUsecase";
-import { Failure } from "../../../../core/errors/failure";
+import { Request, Response } from 'express';
+import { Failure } from '../../../../core/errors/failure';
+import { formatErrorResponse, formatSuccessResponse } from '../../../../core/utils/formatResponse';
+import { UserEmailAlreadyExistsFailure, UserNotFoundFailure } from '../../domain/errors/userFailure';
+import { CheckUserOnlineUsecase } from '../../domain/usecases/checkUserOnlineUsecase';
+import { FindUserByEmailUsecase } from '../../domain/usecases/findUserByEmailUsecase';
+import { RegisterUserUsecase } from '../../domain/usecases/registerUserUsecase';
 
 export class UserController {
     private registerUserUsecase: RegisterUserUsecase;
@@ -21,7 +21,7 @@ export class UserController {
         this.checkUserOnlineUsecase = checkUserOnlineUsecase;
     }
 
-    async register(req: Request, res: Response) {
+    public async register(req: Request, res: Response) {
         try {
             const response = await this.registerUserUsecase.execute(req.body);
             return res.status(200).json(formatSuccessResponse(response));
@@ -34,7 +34,7 @@ export class UserController {
         }
     }
 
-    async findUserByEmail(req: Request, res: Response) {
+    public async findUserByEmail(req: Request, res: Response) {
         try {
             const email = Array.isArray(req.params.email) ? req.params.email[0] : req.params.email;
             const response = await this.findUserByEmailUsecase.execute(email);
@@ -50,7 +50,7 @@ export class UserController {
         }
     }
 
-    async checkUserOnline(req: Request, res: Response) {
+    public async checkUserOnline(req: Request, res: Response) {
         try {
             const userId = Array.isArray(req.params.userId) ? req.params.userId[0] : req.params.userId;
             const isOnline = this.checkUserOnlineUsecase.execute(userId);
