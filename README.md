@@ -10,10 +10,10 @@ Este projeto segue uma **arquitetura em camadas inspirada na Clean Architecture*
 
 Este projeto adota uma abordagem simplificada onde o **usecase chama o datasource diretamente**, sem uma camada de Repository intermediária por não necessitar combinar múltiplos datasources:
 
-Abordagem Utilizada (Simplificada):
+Abordagem Utilizada (Simplificada):        
 Usecase → Datasource → MongoDB
 
-Abordagem Completa (Clean Arch)        
+Abordagem Completa (Clean Arch):        
 Usecase → Repository → Datasource → DB
 
 
