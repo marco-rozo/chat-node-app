@@ -55,7 +55,7 @@ Contém o coração da aplicação:
 | `usecases/` | Interfaces/contracts que definem as operações de negócio |
 | `usecases/impl/` | Implementações concretas dos usecases |
 | `models/` | Schemas do Mongoose |
-| `errors/` | Classes de erro específicas do domínio |
+| `errors/` | Classes de erro personalizados do domínio |
 | --- | --- |
 | `repositories/` | Interfaces/contracts dos repositories (NÃO FEITO NESSE PROJETO) |
 
