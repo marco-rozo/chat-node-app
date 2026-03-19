@@ -1,7 +1,7 @@
 import { SocketEmitter } from "./socketEmitter";
 import { SocketConnection } from "./socketConnection";
-import { ChatSocket } from "./socket";
 import { SocketUserStatusEventEnum } from "./enums/socketEnum";
+import { SocketSessionManager } from "./socketSessionManager";
 
 export class SocketEmitterImpl implements SocketEmitter {
     private socketConnection: SocketConnection;
@@ -23,6 +23,8 @@ export class SocketEmitterImpl implements SocketEmitter {
     }
 
     getUserStatus(userId: string): SocketUserStatusEventEnum {
-        return ChatSocket.isUserOnline(userId) ? SocketUserStatusEventEnum.ONLINE : SocketUserStatusEventEnum.OFFLINE;
+        return SocketSessionManager.isUserOnline(userId)
+            ? SocketUserStatusEventEnum.ONLINE
+            : SocketUserStatusEventEnum.OFFLINE;
     }
 }

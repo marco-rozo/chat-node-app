@@ -49,7 +49,7 @@ export class SendMessageUsecaseImpl implements SendMessageUsecase {
                 };
                 const updatedChat = await this.updateChatDatasource.execute(chatData);
                 if (updatedChat instanceof Failure) {
-                    console.error("Failed to update chat lastMessage:", updatedChat);
+                    console.error("Falha ao atualizar a última mensagem do chat:", updatedChat);
                 }
             }
 
@@ -68,7 +68,7 @@ export class SendMessageUsecaseImpl implements SendMessageUsecase {
 
             return message;
         } catch (error: any) {
-            console.error("Error in SendMessageUsecase:", error);
+            console.error("Erro ao processar envio de mensagem:", error);
             return new SendMessageFailure();
         }
     }

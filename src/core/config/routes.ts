@@ -23,9 +23,7 @@ router.get('/check-user-online/:userId', authMiddleware, (request, response) => 
 });
 
 
-router.get('/', (request, response) => {
-  console.log('Servidor Express funcionando!');
-  console.log('Teste debug');
+router.get('/', (_, response) => {
   response.send('Servidor Express + Socket.IO funcionando!');
 });
 

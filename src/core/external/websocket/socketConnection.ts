@@ -1,9 +1,5 @@
 import { Server } from "socket.io";
 
-/**
- * Singleton to centralize Socket.IO Server instance
- * Allows access to io from anywhere in the application
- */
 export class SocketConnection {
     private static instance: SocketConnection;
     private io: Server | null = null;

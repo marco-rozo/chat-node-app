@@ -23,8 +23,6 @@ export class ChatController {
     async createChat(request: Request, response: Response) {
         try {
             const { participants } = request.body;
-            console.log("Create chat request received:", participants);
-
             const result = await this.createChatUsecase.execute(participants);
 
             if (result instanceof Failure) {
@@ -41,8 +39,6 @@ export class ChatController {
     async getUserChats(request: Request, response: Response) {
         try {
             const { userId } = request.params;
-            console.log("Get user chats request for userId:", userId);
-
             const result = await this.getUserChatsUsecase.execute(userId.toString());
 
             if (result instanceof Failure) {
