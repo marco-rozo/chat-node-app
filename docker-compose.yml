@@ -11,5 +11,19 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chat_app
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://root:password@database:27017/ixc_chat?authSource=admin
+    depends_on:
+      - database
+
 volumes:
   mongo-data:

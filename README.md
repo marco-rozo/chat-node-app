@@ -198,6 +198,8 @@ src/
 
 ### Passo a passo
 
+#### Opção 1: Desenvolvimento Local
+
 1. **Instale as dependências:**
 
 ```bash
@@ -207,7 +209,7 @@ npm install
 2. **Inicie o container Docker com MongoDB:**
 
 ```bash
-docker-compose up -d
+docker-compose up -d database
 ```
 
 Isso irá criar um container `mongodb_ixc_chat` rodando na porta `27017` com as credenciais:
@@ -221,6 +223,20 @@ npm run dev
 ```
 
 O servidor estará disponível em: `http://localhost:8000`
+
+#### Opção 2: Docker (Produção)
+
+1. **Build e inicialização:**
+
+```bash
+docker-compose up --build
+```
+
+Isso ira criar e iniciar:
+- Container `mongodb_ixc_chat` (MongoDB na porta 27017)
+- Container `chat_app` (Aplicação Node.js na porta 8000)
+
+A aplicação estará disponível em: `http://localhost:8000`
 
 ### Scripts Disponíveis
 
